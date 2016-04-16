@@ -1,0 +1,2 @@
+cmdhistory=["(use 'geostitcher.repl)" "(start-server)" "(use 'geostitcher.models.schema)" "(create-users-table)" "(use 'geostitcher.models.schema)" "(create-users-table)"]
+eclipse.preferences.version=1
