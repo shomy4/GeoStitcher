@@ -10,11 +10,28 @@
             [noir.util.route :refer [restricted]]
             [clojure.java.io :as io]
             [ring.util.response :refer [file-response]]
-            [picture-gallery.models.db :as db]
-            [picture-gallery.util :refer [galleries gallery-path]])
+            [geostitcher.models.db :as db]
+            ;;[geostitcher.util :refer [galleries gallery-path]]
+            )
   (:import [java.io File FileInputStream FileOutputStream]
            [java.awt.image AffineTransformOp BufferedImage]
            java.awt.RenderingHints
            java.awt.geom.AffineTransform
            javax.imageio.ImageIO))
 
+(defn upload-page [info]
+  (layout/common
+    [:h2 "Upload an image set"]
+    [:p info]
+    (form-to {:enctype "multipart/form-data"}
+             [:post "/upload"]
+             (file-upload :file)
+             (submit-button "upload"))))
+
+(defn handle-upload [params]
+  (println params)
+  (upload-page "Success"))
+
+(defroutes upload-routes
+  (GET "/upload" [info] (upload-page info))
+  (POST "/upload" {params :params} (handle-upload params)))

@@ -7,7 +7,8 @@
             [compojure.handler :as handler]
             [compojure.route :as route]
             [geostitcher.routes.home :refer [home-routes]]
-            [geostitcher.routes.auth :refer [auth-routes]]))
+            [geostitcher.routes.auth :refer [auth-routes]]
+            [geostitcher.routes.upload :refer [upload-routes]]))
 
 (defn init []
   (println "geostitcher is starting"))
@@ -19,4 +20,4 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
-(def app (noir-middleware/app-handler [home-routes auth-routes app-routes ]))
+(def app (noir-middleware/app-handler [home-routes auth-routes upload-routes app-routes ]))
