@@ -1,0 +1,2 @@
+(ns geostitcher.routes.upload)
+
