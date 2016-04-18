@@ -90,7 +90,6 @@
 
 (defn handle-login [username password]
   (let [user (db/get-user username)]
-    (println user)
     (if (and user (crypt/compare password (:password user)))
       (session/put! :username username)))
   (resp/redirect "/"))

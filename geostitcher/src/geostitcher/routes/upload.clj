@@ -18,6 +18,8 @@
            java.awt.RenderingHints
            java.awt.geom.AffineTransform
            javax.imageio.ImageIO))
+(defn gallery-path []
+  "galleries")
 
 (defn upload-page [info]
   (layout/common
@@ -28,10 +30,13 @@
              (file-upload :file)
              (submit-button "upload"))))
 
-(defn handle-upload [params]
-  (println params)
-  (upload-page "Success"))
+(defn handle-upload [{:keys [filename] :as file}]
+  (println file)
+  (upload-page 
+    (if (empty? filename)
+    "Please select a file to upload"
+    "Success")))
 
 (defroutes upload-routes
   (GET "/upload" [info] (upload-page info))
-  (POST "/upload" {params :params} (handle-upload params)))
+  (POST "/upload" [file] (handle-upload file)))

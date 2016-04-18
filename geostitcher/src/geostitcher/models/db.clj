@@ -4,7 +4,7 @@
 (def db {:subprotocol "postgresql"
          :subname "//localhost/geostitcher"
          :user "postgres"
-         :password "postgres"})
+         :password ""})
 
 (defn create-user [user]
     (sql/insert! db :users user))
