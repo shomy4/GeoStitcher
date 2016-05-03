@@ -13,3 +13,9 @@
                              :place       "VARCHAR(50)"
                              :country     "VARCHAR(50)"})))
 
+(defn create-images-table []
+  (sql/db-do-commands db
+     (sql/create-table-ddl :images
+                           {:userid "varchar(32)"
+                            :name "varchar(100)"})))
+

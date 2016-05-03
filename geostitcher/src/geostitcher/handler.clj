@@ -4,11 +4,16 @@
             [ring.middleware.file-info :refer [wrap-file-info]]
             [hiccup.middleware :refer [wrap-base-url]]
             [noir.util.middleware :as noir-middleware]
+            [noir.session         :as session]
             [compojure.handler :as handler]
             [compojure.route :as route]
             [geostitcher.routes.home :refer [home-routes]]
             [geostitcher.routes.auth :refer [auth-routes]]
-            [geostitcher.routes.upload :refer [upload-routes]]))
+            [geostitcher.routes.upload :refer [upload-routes]]
+            [geostitcher.routes.gallery :refer [gallery-routes]]))
+
+(defn user-page [_]
+  (session/get :username))
 
 (defn init []
   (println "geostitcher is starting"))
@@ -20,4 +25,5 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
-(def app (noir-middleware/app-handler [home-routes auth-routes upload-routes app-routes ]))
+(def app (noir-middleware/app-handler [home-routes auth-routes upload-routes gallery-routes app-routes ]
+                                      :access-rules [user-page]))

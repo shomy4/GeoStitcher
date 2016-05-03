@@ -7,7 +7,14 @@
             [noir.session :as session]
             [noir.response :as resp]
             [noir.validation :as vali]
-            [noir.util.crypt :as crypt]))
+            [noir.util.crypt :as crypt]
+            [geostitcher.util :refer [gallery-path]])
+  (:import java.io.File))
+
+(defn create-gallery-path []
+  (let [user-path (File. (gallery-path))]
+    (if-not (.exists user-path) (.mkdirs user-path))
+      (str (.getAbsolutePath user-path) File/separator)))
 
 (defn format-error [username ex]
   (cond
@@ -82,8 +89,10 @@
     (db/create-user {:username username :password password :first_name first_name :last_name last_name
                      :occupation occupation :place place :country country})
     (session/put! :username username)
+    (create-gallery-path)
     (resp/redirect "/")
     (catch Exception ex 
+      (println ex)
       (vali/rule false [:username (format-error username ex)])
   (registration-page)))
   (registration-page username))))
