@@ -1,5 +1,4 @@
 function deleteImages(){
-	alert("Started");
 	var selectedInputs = $("input:checked");
 	var selectedIds = [];
 	selectedInputs.each(function(){
@@ -32,5 +31,4 @@ function deleteImages(){
 $(document).ready(function(){
 
 	$("#delete").click(deleteImages);
-	alert("bbb");
 });
