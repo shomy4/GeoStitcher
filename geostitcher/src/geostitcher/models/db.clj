@@ -30,3 +30,6 @@
 
 (defn delete-image [userid name]
   (sql/delete! db :images ["userid = ? and name = ?" userid name]))
+
+(defn delete-user [userid]
+  (sql/delete! db :users ["username = ?" userid]))

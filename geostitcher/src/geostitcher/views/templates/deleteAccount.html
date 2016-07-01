@@ -1,0 +1,11 @@
+{% extends "geostitcher/views/templates/base.html" %} 
+{% block content %}
+<div class="gallery">    
+    <form action="{{context}}/confirm-delete" method="POST">
+        <input type="submit" value="delete account" />
+    </form>
+    <form action="{{context}}/" method="GET">
+        <input type="submit" value="cancel" />
+    </form>
+</div>
+{% endblock %}

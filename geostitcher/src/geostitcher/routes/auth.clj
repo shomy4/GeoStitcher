@@ -8,6 +8,8 @@
             [noir.response :as resp]
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]
+            [noir.util.route :refer [restricted]]
+            [geostitcher.routes.upload :refer [delete-image]]
             [geostitcher.util :refer [gallery-path]])
   (:import java.io.File))
 
@@ -84,6 +86,20 @@
   (session/clear!)
   (resp/redirect "/"))
 
+(defn delete-account-page []  
+  (layout/render "deleteAccount.html"))
+
+(defn handle-confirm-delete []
+  (let [user (session/get :username)]
+    (println "DELETE ACCOUNT")
+    (doseq [{:keys [name]} (db/images-by-user user)]
+      (delete-image user name))
+    (clojure.java.io/delete-file (gallery-path))
+    (db/delete-user user)
+    (session/clear!)
+    (resp/redirect "/")))
+
+
 (defroutes auth-routes
   (GET "/register" []
        (registration-page))
@@ -93,4 +109,10 @@
   (POST "/login" [username password]
         (handle-login username password))
   
-  (GET "/logout" [] (handle-logout)))
+  (GET "/logout" [] (handle-logout))
+  
+  (GET "/delete-account" []
+       (restricted (delete-account-page)))
+  
+  (POST "/confirm-delete" []
+        (restricted (handle-confirm-delete))))
