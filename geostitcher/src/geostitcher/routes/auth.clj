@@ -46,34 +46,10 @@
 
 
 (defn registration-page [& [username]]
-  (layout/base
-    (form-to [:post "/register"]
-             (control :username
-                      (label "username" "Username")
-                      (text-field {:tabindex 1} "username" username))
-             
-             (control :password
-                      (label "password" "Password")
-                      (password-field {:tabindex 2} "password"))
-             (control :password1
-                      (label "password1" "Password")
-                      (password-field {:tabindex 3} "password1"))
-             (control :first_name
-                      (label "first_name" "First name")
-                      (text-field {:tabindex 4} "first_name"))
-             (control :last_name
-                      (label "last_name" "Last name")
-                      (text-field {:tabindex 5} "last_name"))
-             (control :occupation
-                      (label "occupation" "Occupation")
-                      (text-field {:tabindex 6} "occupation"))
-             (control :place
-                      (label "place" "Place")
-                      (text-field {:tabindex 7} "place"))
-             (control :country
-                      (label "country" "Country")
-                      (text-field {:tabindex 8} "country"))
-             (submit-button {:tabindex 9} "Create account"))))
+  (layout/render "registration.html"
+                 {:username username
+                  :username-error (first (vali/get-errors :username))
+                  :password-error (first (vali/get-errors :password))}))
 
 (defn handle-registration [request]
   (let [form-params (:params request)
@@ -98,9 +74,10 @@
   (registration-page username))))
 
 (defn handle-login [username password]
-  (let [user (db/get-user username)]
+  (let [user (db/get-user username)] 
     (if (and user (crypt/compare password (:password user)))
-      (session/put! :username username)))
+      (session/put! :username username) ))
+
   (resp/redirect "/"))
 
 (defn handle-logout []

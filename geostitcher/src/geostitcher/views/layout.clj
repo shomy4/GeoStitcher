@@ -1,13 +1,34 @@
 (ns geostitcher.views.layout
   (:require [hiccup.page :refer [html5 include-css include-js]]
+            [selmer.parser :as parser]
             [hiccup.element :refer [link-to]]
             [noir.session :as session]
             [hiccup.form :refer :all]
             [ring.util.response :refer [content-type response]]
             [compojure.response :refer [Renderable]]))
 
+
+(def template-folder "geostitcher/views/templates/")
+
 (defn utf-8-response [html]
   (content-type (response html) "text/html; charset=utf-8"))
+
+(deftype RenderablePage [template params]
+  Renderable
+  (render [this request]
+    (->> (assoc params
+                :context (:context request)
+                :username  (session/get :username))
+                
+         (parser/render-file (str template-folder template))
+         utf-8-response)))
+
+(defn render [template & [params]]
+  (RenderablePage. template params))
+
+
+
+
 
 (defn base [& content]
   (html5
@@ -18,7 +39,7 @@
     [:body content]))
 
 (defn make-menu [& items]
-  [:div (for [item items] [:div.menuitem item])])
+  [:div#usermenu (for [item items] [:div.menuitem item])])
 
 (defn guest-menu []
   (make-menu

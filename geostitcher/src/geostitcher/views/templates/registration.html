@@ -1,0 +1,64 @@
+
+{% extends "geostitcher/views/templates/base.html" %}
+{% block menu %}
+{% endblock %} 
+{% block content %}
+<div class="content">       
+    <form action="{{context}}/register" method="POST">
+        
+        <label for="user-id">Username</label>        
+        <input id="username" 
+               name="username"
+               tabindex="1" 
+               type="text"
+               value="{{"username"}}" /><br />        
+        <div class="error">{{username-error}}</div>
+                               
+        <label for="password">Password</label>        
+        <input id="password" 
+               name="password"
+               tabindex="2"
+               type="password" /><br />
+        <div class="error">{{password-error}}</div>
+                      
+        <label for="password1">Retype password</label>        
+        <input id="password1"
+               name="password1"
+               tabindex="3"
+               type="password" /><br />
+               
+        <label for="first_name">First name</label>        
+        <input id="first_name"
+               name="first_name"
+               tabindex="4"
+               type="text" /><br />
+               
+        <label for="last_name">Last name</label>        
+        <input id="last_name"
+               name="last_name"
+               tabindex="5"
+               type="text" /><br />
+               
+               
+        <label for="occupation">Occupation</label>        
+        <input id="occupation"
+               name="occupation"
+               tabindex="6"
+               type="text" /><br />
+               
+               
+        <label for="place">Place</label>        
+        <input id="place"
+               name="place"
+               tabindex="7"
+               type="text" /><br />
+               
+        <label for="country">Country</label>        
+        <input id="country"
+               name="country"
+               tabindex="8"
+               type="text" /><br />
+        <input tabindex="9" type="submit" value="create account" />
+    </form>    
+</div>
+{% endblock %}
