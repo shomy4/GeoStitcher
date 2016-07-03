@@ -14,8 +14,13 @@
       (str (.getAbsolutePath dataset-path) File/separator)))
 
 (defn display-datasets []
-  (layout/render "datasets.html"
+  (layout/render "datasets_list.html"
                  {:datasets     (db/get-datasets (session/get :user_id))}))
+
+(defn display_dataset [dataset_id]
+  (println (db/images-from-dataset dataset_id))
+  (layout/render "dataset.html"
+                 {:images     (db/images-from-dataset dataset_id)}))
 
 (defn handle-dataset [request]
   (let [form-params (:params request)
@@ -34,5 +39,7 @@
 (defroutes datasets-routes
   (GET "/datasets" []
        (display-datasets))
+  (GET "/datasets/:dataset_id" [dataset_id]
+       (display_dataset dataset_id))
   (POST "/datasets" request
        (handle-dataset request)))

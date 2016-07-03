@@ -6,7 +6,7 @@
 {% if datasets %}
 <h2>Your current datasets </h2>
 {% for dataset in datasets %}
-    <p> {{ dataset.name }} </p>
+    <a href="{{context}}/datasets/{{dataset.id}}"> {{ dataset.name }} </p>
 {% endfor %}
 {% endif %}
 <h3> Create new dataset </h3>

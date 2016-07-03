@@ -91,10 +91,12 @@
 (defn delete-account-page []  
   (layout/render "deleteAccount.html"))
 
+
+;;TO DO CHANGE TO DELETE ALL PICTURES AND DATASETS OF THIS USER
 (defn handle-confirm-delete []
   (let [user (session/get :username)]
     (println "DELETE ACCOUNT")
-    (doseq [{:keys [name]} (db/images-by-user user)]
+    (doseq [{:keys [name]} (db/images-from-dataset user)]
       (delete-image user name))
     (clojure.java.io/delete-file (gallery-path))
     (db/delete-user user)

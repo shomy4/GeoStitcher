@@ -21,10 +21,9 @@
     (sql/insert! db :surveys_images {:user_id userid :name name :dataset_id dataset_id})
   (throw (Exception. "You have already uploaded an image with the exact same name in same dataset"))))
 
-(defn images-by-user [dataset_id userid]
-  (println "images-by-user" dataset_id "/" userid )
+(defn images-from-dataset [dataset_id]
   (sql/query db
-    ["select * from surveys_images where dataset_id = ? and user_id = ?" dataset_id userid] ))
+    ["select * from surveys_images where dataset_id = ?" dataset_id] ))
 
 (defn get-gallery-previews []
   (sql/query db

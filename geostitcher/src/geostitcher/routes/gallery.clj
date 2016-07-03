@@ -10,7 +10,7 @@
                  {:thumb-prefix thumb-prefix
                   :page-owner   userid
                   :dataset_id dataset_id
-                  :pictures     (db/images-by-user (java.lang.Integer/parseInt dataset_id)  (java.lang.Integer/parseInt userid))}))
+                  :pictures     (db/images-from-dataset (java.lang.Integer/parseInt dataset_id)  )}))
 
 (defroutes gallery-routes
   (GET "/datasets/:dataset_id/gallery/:userid" [dataset_id userid]
