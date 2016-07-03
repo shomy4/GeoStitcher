@@ -1,0 +1,20 @@
+{% extends "geostitcher/views/templates/base.html" %}
+
+{% block content %}
+<div class="gallery">
+<h2>Upload image </h2>
+{% if error %}
+<p class="error"> {{ error }} </p>
+{% endif %}
+{% if image %}
+<img src={{image}} width="300" height="300" />
+{% else %}
+No image tag
+{% endif %}
+<form action="{{context}}/upload" enctype="multipart/form-data" method="POST">
+<input id="file" name="file" type="file" />
+<input type="submit" value="Upload" />
+</form>
+</div>
+
+{% endblock content%}
