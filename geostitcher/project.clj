@@ -32,4 +32,9 @@
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
-   {:dependencies [[ring/ring-mock "0.3.0"] [ring/ring-devel "1.6.0-beta1"] [org.clojure/clojurescript "0.0-3308"] ]}})
+   {:dependencies [[ring/ring-mock "0.3.0"] 
+                   [ring/ring-devel "1.6.0-beta1"] 
+                   [org.clojure/clojurescript "0.0-3308"]
+                   [opencv/opencv "2.4.11"]
+                   [opencv/opencv-native "2.4.11"]]}}
+  :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)])
