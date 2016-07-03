@@ -5,12 +5,13 @@
             [geostitcher.models.db :as db]
             [noir.session :as session]))
 
-(defn display-gallery [userid]
+(defn display-gallery [dataset_id userid]
   (layout/render "gallery.html"
                  {:thumb-prefix thumb-prefix
                   :page-owner   userid
-                  :pictures     (db/images-by-user userid)}))
+                  :dataset_id dataset_id
+                  :pictures     (db/images-by-user (java.lang.Integer/parseInt dataset_id)  (java.lang.Integer/parseInt userid))}))
 
 (defroutes gallery-routes
-  (GET "/gallery/:userid" [userid]
-       (display-gallery userid)))
+  (GET "/datasets/:dataset_id/gallery/:userid" [dataset_id userid]
+       (display-gallery dataset_id userid)))

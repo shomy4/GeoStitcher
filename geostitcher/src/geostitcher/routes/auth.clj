@@ -1,6 +1,5 @@
 (ns geostitcher.routes.auth
-  (:require [hiccup.form :refer :all]
-            [compojure.core :refer :all]
+  (:require [compojure.core :refer :all]
             [geostitcher.routes.home :refer :all]
             [geostitcher.views.layout :as layout]
             [geostitcher.models.db :as db]
@@ -67,6 +66,7 @@
     (db/create-user {:username username :password password :first_name first_name :last_name last_name
                      :occupation occupation :place place :country country})
     (session/put! :username username)
+    
     (create-gallery-path)
     (resp/redirect "/")
     (catch Exception ex 
@@ -78,8 +78,10 @@
 (defn handle-login [username password]
   (let [user (db/get-user username)] 
     (if (and user (crypt/compare password (:password user)))
-      (session/put! :username username) ))
-
+      (do
+        (session/put! :username username)
+        (session/put! :user_id (:id user)) )))
+  (println "SESIJA USERID" (session/get :user_id))
   (resp/redirect "/"))
 
 (defn handle-logout []

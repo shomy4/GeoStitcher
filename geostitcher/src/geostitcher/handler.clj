@@ -10,6 +10,7 @@
             [geostitcher.routes.home :refer [home-routes]]
             [geostitcher.routes.auth :refer [auth-routes]]
             [geostitcher.routes.upload :refer [upload-routes]]
+            [geostitcher.routes.datasets :refer [datasets-routes]]
             [geostitcher.routes.gallery :refer [gallery-routes]]))
 
 (defn user-page [_]
@@ -25,6 +26,6 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
-(def app (noir-middleware/app-handler [home-routes auth-routes upload-routes gallery-routes app-routes ]
+(def app (noir-middleware/app-handler [home-routes auth-routes upload-routes datasets-routes gallery-routes app-routes ]
                                       :access-rules [user-page]
                                       :ring-defaults (assoc site-defaults :security {:anti-forgery false})))

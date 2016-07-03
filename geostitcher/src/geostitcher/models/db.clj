@@ -7,29 +7,38 @@
          :password ""})
 
 (defn create-user [user]
-    (sql/insert! db :users user))
+    (sql/insert! db :auth_users user))
 
 (defn get-user [username]
   (first
   (sql/query db
-    ["select * from users where username = ?" username] )))
+    ["select * from auth_users where username = ?" username] )))
 
-(defn add-image [userid name]
+(defn add-image [userid dataset_id name]
+  (println userid "|" dataset_id "|" name)
   (if-not (first (sql/query db
-                            ["SELECT userid from images where userid = ? and name = ?" userid name]))
-    (sql/insert! db :images {:userid userid :name name})
-  (throw (Exception. "You have already uploaded an image with the exact same name"))))
+                            ["SELECT user_id from surveys_images where user_id = ? and name = ? and dataset_id = ?" userid name dataset_id]))
+    (sql/insert! db :surveys_images {:user_id userid :name name :dataset_id dataset_id})
+  (throw (Exception. "You have already uploaded an image with the exact same name in same dataset"))))
 
-(defn images-by-user [userid]
+(defn images-by-user [dataset_id userid]
+  (println "images-by-user" dataset_id "/" userid )
   (sql/query db
-    ["select * from images where userid = ?" userid] ))
+    ["select * from surveys_images where dataset_id = ? and user_id = ?" dataset_id userid] ))
 
 (defn get-gallery-previews []
   (sql/query db
-             ["SELECT * FROM (SELECT *,row_number() OVER (partition by userid) as row_number from images) as rows where row_number = 1"]))
+             ["SELECT * FROM (SELECT *,row_number() OVER (partition by user_id) as row_number from surveys_images) as rows where row_number = 1"]))
+
+(defn get-datasets [user_id]
+  (sql/query db
+             ["SELECT * FROM surveys_datasets WHERE user_id = ?" user_id]))
+
+(defn create-dataset [dataset]
+    (:id (first (sql/insert! db :surveys_datasets dataset))))
 
 (defn delete-image [userid name]
-  (sql/delete! db :images ["userid = ? and name = ?" userid name]))
+  (sql/delete! db :surveys_images ["user_id = ? and name = ?" userid name]))
 
 (defn delete-user [userid]
   (sql/delete! db :users ["username = ?" userid]))

@@ -13,9 +13,10 @@
 (defn gallery-path []
   (str galleries File/separator (session/get :username)))
 
-(defn image-uri [userid file-name]
-  (str "/img/" userid "/" (url-encode file-name)))
+(defn image-uri [userid dataset_id file-name]
+  (str "/img/" userid "/" dataset_id "/" (url-encode file-name)))
 
-(defn thumb-uri [userid file-name]
-  (image-uri userid (str thumb-prefix file-name)))
+(defn thumb-uri [userid dataset_id file-name]
+  (println (image-uri userid dataset_id (str thumb-prefix file-name)))
+  (image-uri userid dataset_id (str thumb-prefix file-name)))
 

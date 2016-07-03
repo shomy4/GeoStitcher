@@ -23,4 +23,9 @@
    {% endifequal %}
    </div>
 </div>
+<form action="{{context}}/upload/{{dataset_id}}" enctype="multipart/form-data" method="POST">
+<input id="file" name="file" type="file" />
+<input type="submit" value="Upload" />
+</form>
+</div>
 {% endblock %}

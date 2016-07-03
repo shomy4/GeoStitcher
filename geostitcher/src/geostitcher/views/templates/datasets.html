@@ -1,0 +1,41 @@
+{% extends "geostitcher/views/templates/base.html" %}
+
+{% block content %}
+<div class="gallery">
+
+{% if datasets %}
+<h2>Your current datasets </h2>
+{% for dataset in datasets %}
+    <p> {{ dataset.name }} </p>
+{% endfor %}
+{% endif %}
+<h3> Create new dataset </h3>
+</div>
+<div class="content">       
+    <form action="{{context}}/datasets" method="POST">
+        
+        <label for="name">Name</label>        
+        <input id="name" 
+               name="name"
+               tabindex="1" 
+               type="text"
+               value="{{"name"}}" /><br />        
+        <div class="error">{{name-error}}</div>
+                               
+        <label for="camera">Camera</label>        
+        <input id="camera" 
+               name="camera"
+               tabindex="2"
+               type="text" /><br />
+        <div class="error">{{camera-error}}</div>
+                      
+        <label for="height">Height</label>        
+        <input id="height"
+               name="height"
+               tabindex="3"
+               type="number" /><br />
+        
+        <input tabindex="9" type="submit" value="Create dataset" />
+    </form>    
+</div>
+{% endblock %}
