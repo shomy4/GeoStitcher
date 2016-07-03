@@ -2,7 +2,7 @@
   (:require [compojure.core :refer [defroutes routes]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
-            [hiccup.middleware :refer [wrap-base-url]]
+            [ring.middleware.defaults :refer :all]
             [noir.util.middleware :as noir-middleware]
             [noir.session         :as session]
             [compojure.handler :as handler]
@@ -26,4 +26,5 @@
   (route/not-found "Not Found"))
 
 (def app (noir-middleware/app-handler [home-routes auth-routes upload-routes gallery-routes app-routes ]
-                                      :access-rules [user-page]))
+                                      :access-rules [user-page]
+                                      :ring-defaults (assoc site-defaults :security {:anti-forgery false})))

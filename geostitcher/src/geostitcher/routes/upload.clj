@@ -50,13 +50,11 @@
 (defn handle-upload [{:keys [filename] :as file}]
   (upload-page 
     (if (empty? filename)
-    {:error "please select file to upload"}
+    {:error "Please select file to upload"}
     (try
       (noir.io/upload-file (gallery-path) file :create-path? true)
       (save-thumbnail file)
       (db/add-image (session/get :username) filename)
-      (println "Image tag")
-      (println (thumb-uri (session/get :username) filename))
       {:image (thumb-uri (session/get :username) filename)}
       (catch Exception ex
         (error ex "An error has occured while uploading" name)
