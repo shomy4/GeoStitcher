@@ -9,16 +9,16 @@
             [noir.session :as session]
             [noir.response :as resp]
             [noir.util.route :refer [restricted]]
+            [taoensso.timbre :refer [error]]
             [clojure.java.io :as io]
             [ring.util.response :refer [file-response]]
-            [geostitcher.models.db :as db]
-            )
+            [geostitcher.models.db :as db])
+  
   (:import [java.io File FileInputStream FileOutputStream]
            [java.awt.image AffineTransformOp BufferedImage]
            java.awt.RenderingHints
            java.awt.geom.AffineTransform
            javax.imageio.ImageIO))
-
 
 (defn scale [img ratio width height]
   (let [scale (AffineTransform/getScaleInstance (double ratio) (double ratio))
@@ -43,30 +43,24 @@
 (defn serve-file [user-id file-name]
   (file-response (str galleries File/separator user-id File/separator file-name)))
 
-(defn upload-page [info]
-  (layout/common
-    [:h2 "Upload an image set"]
-    [:p info]
-    (form-to {:enctype "multipart/form-data"}
-             [:post "/upload"]
-             (file-upload :file)
-             (submit-button "upload"))))
-
+(defn upload-page [params]
+  (layout/render "upload.html"
+                 params))
 
 (defn handle-upload [{:keys [filename] :as file}]
   (upload-page 
     (if (empty? filename)
-    "Please select a file to upload"
+    {:error "please select file to upload"}
     (try
       (noir.io/upload-file (gallery-path) file :create-path? true)
       (save-thumbnail file)
       (db/add-image (session/get :username) filename)
-      (println (str "/img/" thumb-prefix (url-encode filename)))
-      (image {:height "150px"}
-             (thumb-uri (session/get :username) filename))
-      
+      (println "Image tag")
+      (println (thumb-uri (session/get :username) filename))
+      {:image (thumb-uri (session/get :username) filename)}
       (catch Exception ex
-        (str "error uploading file" (.getMessage ex)))))))
+        (error ex "An error has occured while uploading" name)
+        {:error (str "Error uploading file" (.getMessage ex))})))))
 
 (defn delete-image [userid name]
   (try
@@ -82,7 +76,7 @@
       (for [name names] {:name name :status (delete-image userid name)}))))
 
 (defroutes upload-routes
-  (GET "/upload" [info] (restricted (upload-page info)))
+  (GET "/upload" [info] (restricted (upload-page {:info info})))
   (POST "/upload" [file] (restricted (handle-upload file)))
   (GET "/img/:username/:file-name" [username file-name] (serve-file username file-name))
   (POST "/delete" [names] (restricted (delete-images names))))
