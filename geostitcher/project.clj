@@ -8,7 +8,9 @@
                  [postgresql/postgresql "9.1-901.jdbc4"]
                  [org.clojure/java.jdbc "0.6.0-alpha1"]
                  [clj-pdf "1.11.6"]
-                 [lib-noir "0.7.6"]]
+                 [com.taoensso/timbre "3.1.6"]
+                 [lib-noir "0.7.6"]
+                 [selmer "0.5.4"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler geostitcher.handler/app
          :init geostitcher.handler/init
