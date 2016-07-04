@@ -46,8 +46,6 @@
                  params))
 
 (defn handle-upload [{:keys [filename] :as file} dataset_id]
-  (println "FILENAME" filename)
-  (println "DATASET ID" dataset_id)
   (upload-page 
     (if (empty? filename)
     {:error "Please select file to upload"}

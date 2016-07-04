@@ -33,6 +33,10 @@
   (sql/query db
              ["SELECT * FROM surveys_datasets WHERE user_id = ?" user_id]))
 
+(defn get-dataset [dataset_id]
+  (first (sql/query db
+                    ["SELECT * FROM surveys_datasets WHERE id = ?" dataset_id])))
+
 (defn create-dataset [dataset]
     (:id (first (sql/insert! db :surveys_datasets dataset))))
 

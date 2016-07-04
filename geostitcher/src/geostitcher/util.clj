@@ -20,3 +20,5 @@
   (println (image-uri userid dataset_id (str thumb-prefix file-name)))
   (image-uri userid dataset_id (str thumb-prefix file-name)))
 
+(defn create-img-string [img]
+     (str "/img/" (session/get :username) "/"(:dataset_id img) "/thumb_" (:name img)))

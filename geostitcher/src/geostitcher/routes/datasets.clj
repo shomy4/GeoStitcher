@@ -5,7 +5,7 @@
             [geostitcher.models.db :as db]
             [noir.session :as session]
             [noir.response :as resp]
-            [geostitcher.util :refer [gallery-path]])
+            [geostitcher.util :refer [gallery-path create-img-string]])
   (:import java.io.File))
 
 (defn create-dataset-filepath [dataset_id]
@@ -18,9 +18,10 @@
                  {:datasets     (db/get-datasets (session/get :user_id))}))
 
 (defn display_dataset [dataset_id]
-  (println (db/images-from-dataset dataset_id))
+  (println (db/get-dataset (Integer/parseInt dataset_id)))
   (layout/render "dataset.html"
-                 {:images     (db/images-from-dataset dataset_id)}))
+                 {:images     (map #(create-img-string %) (db/images-from-dataset (Integer/parseInt dataset_id)))
+                  :dataset    (db/get-dataset (Integer/parseInt dataset_id))}))
 
 (defn handle-dataset [request]
   (let [form-params (:params request)
