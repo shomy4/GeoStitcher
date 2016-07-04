@@ -10,7 +10,9 @@
                  [clj-pdf "1.11.6"]
                  [com.taoensso/timbre "3.1.6"]
                  [lib-noir "0.9.8"]
-                 [selmer "1.0.7"]]
+                 [selmer "1.0.7"]
+                 [domina "1.0.3"]
+                 [cljs-ajax "0.5.8"]]
   :plugins [[lein-ring "0.9.7"]
             [lein-cljsbuild "1.1.3"]]
   :cljsbuild {
@@ -20,7 +22,7 @@
         ; The standard ClojureScript compiler options:
         ; (See the ClojureScript compiler documentation for details.)
         :compiler {
-          :output-to "war/javascripts/main.js"  ; default: target/cljsbuild-main.js
+          :output-to "resources/public/js/geostitcher-cljs.js"  ; default: target/cljsbuild-main.js
           :optimizations :whitespace
           :pretty-print true}}]}
   :ring {:handler geostitcher.handler/app
@@ -37,4 +39,5 @@
                    [org.clojure/clojurescript "0.0-3308"]
                    [opencv/opencv "2.4.11"]
                    [opencv/opencv-native "2.4.11"]]}}
-  :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)])
+  :injections [(clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)]
+  :hooks [leiningen.cljsbuild])
